@@ -61,19 +61,23 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                     Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.asset(
-                            'assets/images/CyraTask.png',
-                            width: 155.0,
-                            fit: BoxFit.contain,
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 48.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Image.asset(
+                              'assets/images/CyraTask.png',
+                              width: 155.0,
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ],
                     ),
                     Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 8.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 24.0),
                       child: AuthUserStreamWidget(
                         builder: (context) => Container(
                           width: 68.0,
@@ -96,52 +100,69 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         ),
                       ),
                     ),
-                    AuthUserStreamWidget(
-                      builder: (context) => Text(
-                        'Hello, ${valueOrDefault<String>(
-                          currentUserDisplayName,
-                          'user',
-                        )}!',
-                        style:
-                            FlutterFlowTheme.of(context).headlineSmall.override(
-                                  fontFamily: 'Inter',
-                                  letterSpacing: 0.0,
-                                ),
-                      ),
-                    ),
-                    FFButtonWidget(
-                      onPressed: () async {
-                        GoRouter.of(context).prepareAuthEvent();
-                        await authManager.signOut();
-                        GoRouter.of(context).clearRedirectLocation();
-
-                        context.goNamedAuth('login', context.mounted);
-                      },
-                      text: 'Log Out',
-                      options: FFButtonOptions(
-                        width: double.infinity,
-                        height: 70.0,
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            16.0, 0.0, 16.0, 0.0),
-                        iconPadding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        color: FlutterFlowTheme.of(context).primary,
-                        textStyle: FlutterFlowTheme.of(context)
-                            .labelMedium
-                            .override(
-                              fontFamily: 'Inter',
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              letterSpacing: 0.0,
-                            ),
-                        elevation: 0.0,
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          width: 1.0,
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 8.0),
+                      child: AuthUserStreamWidget(
+                        builder: (context) => Text(
+                          'Hello, ${valueOrDefault<String>(
+                            currentUserDisplayName,
+                            'user',
+                          )}!',
+                          style: FlutterFlowTheme.of(context)
+                              .headlineSmall
+                              .override(
+                                fontFamily: 'Inter',
+                                letterSpacing: 0.0,
+                              ),
                         ),
-                        borderRadius: BorderRadius.circular(24.0),
                       ),
                     ),
-                  ].divide(const SizedBox(height: 24.0)),
+                    Text(
+                      currentUserEmail,
+                      style: FlutterFlowTheme.of(context).bodySmall.override(
+                            fontFamily: 'Inter',
+                            letterSpacing: 0.0,
+                            fontStyle: FontStyle.italic,
+                          ),
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
+                      child: FFButtonWidget(
+                        onPressed: () async {
+                          GoRouter.of(context).prepareAuthEvent();
+                          await authManager.signOut();
+                          GoRouter.of(context).clearRedirectLocation();
+
+                          context.goNamedAuth('login', context.mounted);
+                        },
+                        text: 'Log Out',
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 70.0,
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              16.0, 0.0, 16.0, 0.0),
+                          iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          color: FlutterFlowTheme.of(context).primary,
+                          textStyle: FlutterFlowTheme.of(context)
+                              .labelMedium
+                              .override(
+                                fontFamily: 'Inter',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                letterSpacing: 0.0,
+                              ),
+                          elevation: 0.0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 1.0,
+                          ),
+                          borderRadius: BorderRadius.circular(24.0),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
