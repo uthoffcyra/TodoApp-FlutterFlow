@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/upload_data.dart';
+import '/index.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'onboarding_model.dart';
@@ -13,6 +14,9 @@ export 'onboarding_model.dart';
 
 class OnboardingWidget extends StatefulWidget {
   const OnboardingWidget({super.key});
+
+  static String routeName = 'onboarding';
+  static String routePath = '/onboarding';
 
   @override
   State<OnboardingWidget> createState() => _OnboardingWidgetState();
@@ -28,10 +32,12 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
     super.initState();
     _model = createModel(context, () => OnboardingModel());
 
-    _model.displayNameTextController ??= TextEditingController();
+    _model.displayNameTextController ??=
+        TextEditingController(text: currentUserDisplayName);
     _model.displayNameFocusNode ??= FocusNode();
 
-    _model.genderTextController ??= TextEditingController();
+    _model.genderTextController ??= TextEditingController(
+        text: valueOrDefault(currentUserDocument?.gender, ''));
     _model.genderFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
@@ -57,14 +63,14 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
         body: SafeArea(
           top: true,
           child: Align(
-            alignment: const AlignmentDirectional(0.0, 0.0),
+            alignment: AlignmentDirectional(0.0, 0.0),
             child: Container(
-              constraints: const BoxConstraints(
+              constraints: BoxConstraints(
                 maxWidth: 400.0,
               ),
-              decoration: const BoxDecoration(),
+              decoration: BoxDecoration(),
               child: Padding(
-                padding: const EdgeInsets.all(24.0),
+                padding: EdgeInsets.all(24.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -153,28 +159,31 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                               ));
                             },
                             child: Stack(
-                              alignment: const AlignmentDirectional(-1.0, 1.0),
+                              alignment: AlignmentDirectional(-1.0, 1.0),
                               children: [
                                 Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
                                       8.0, 0.0, 0.0, 8.0),
-                                  child: Container(
-                                    width: 68.0,
-                                    height: 68.0,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                      image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: Image.network(
-                                          _model.uploadedFileUrl,
-                                        ).image,
-                                      ),
-                                      borderRadius: BorderRadius.circular(68.0),
-                                      border: Border.all(
+                                  child: AuthUserStreamWidget(
+                                    builder: (context) => Container(
+                                      width: 68.0,
+                                      height: 68.0,
+                                      decoration: BoxDecoration(
                                         color: FlutterFlowTheme.of(context)
-                                            .primaryText,
-                                        width: 1.0,
+                                            .secondaryBackground,
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: Image.network(
+                                            currentUserPhoto,
+                                          ).image,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(68.0),
+                                        border: Border.all(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                          width: 1.0,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -193,194 +202,203 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                         .primaryText,
                                     size: 21.0,
                                   ),
-                                  onPressed: () {
-                                    print('IconButton pressed ...');
-                                  },
+                                  onPressed: true
+                                      ? null
+                                      : () {
+                                          print('IconButton pressed ...');
+                                        },
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(
-                            width: double.infinity,
-                            child: TextFormField(
-                              controller: _model.displayNameTextController,
-                              focusNode: _model.displayNameFocusNode,
-                              onChanged: (_) => EasyDebounce.debounce(
-                                '_model.displayNameTextController',
-                                const Duration(milliseconds: 2000),
-                                () => safeSetState(() {}),
-                              ),
-                              autofocus: false,
-                              obscureText: false,
-                              decoration: InputDecoration(
-                                isDense: true,
-                                labelStyle: FlutterFlowTheme.of(context)
-                                    .labelMedium
+                          AuthUserStreamWidget(
+                            builder: (context) => Container(
+                              width: double.infinity,
+                              child: TextFormField(
+                                controller: _model.displayNameTextController,
+                                focusNode: _model.displayNameFocusNode,
+                                onChanged: (_) => EasyDebounce.debounce(
+                                  '_model.displayNameTextController',
+                                  Duration(milliseconds: 2000),
+                                  () => safeSetState(() {}),
+                                ),
+                                autofocus: false,
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  labelStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .override(
+                                        fontFamily: 'Inter',
+                                        letterSpacing: 0.0,
+                                      ),
+                                  hintText: 'Name...',
+                                  hintStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .override(
+                                        fontFamily: 'Inter',
+                                        letterSpacing: 0.0,
+                                      ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(24.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0x00000000),
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(24.0),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context).error,
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(24.0),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context).error,
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(24.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  contentPadding:
+                                      EdgeInsetsDirectional.fromSTEB(
+                                          24.0, 26.0, 24.0, 26.0),
+                                  suffixIcon: _model.displayNameTextController!
+                                          .text.isNotEmpty
+                                      ? InkWell(
+                                          onTap: () async {
+                                            _model.displayNameTextController
+                                                ?.clear();
+                                            safeSetState(() {});
+                                          },
+                                          child: Icon(
+                                            Icons.clear,
+                                            size: 22,
+                                          ),
+                                        )
+                                      : null,
+                                ),
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
                                     .override(
                                       fontFamily: 'Inter',
                                       letterSpacing: 0.0,
                                     ),
-                                hintText: 'Name...',
-                                hintStyle: FlutterFlowTheme.of(context)
-                                    .labelMedium
-                                    .override(
-                                      fontFamily: 'Inter',
-                                      letterSpacing: 0.0,
-                                    ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(24.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(24.0),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: FlutterFlowTheme.of(context).error,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(24.0),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: FlutterFlowTheme.of(context).error,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(24.0),
-                                ),
-                                filled: true,
-                                fillColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
-                                    24.0, 26.0, 24.0, 26.0),
-                                suffixIcon: _model.displayNameTextController!
-                                        .text.isNotEmpty
-                                    ? InkWell(
-                                        onTap: () async {
-                                          _model.displayNameTextController
-                                              ?.clear();
-                                          safeSetState(() {});
-                                        },
-                                        child: const Icon(
-                                          Icons.clear,
-                                          size: 22,
-                                        ),
-                                      )
-                                    : null,
+                                keyboardType: TextInputType.name,
+                                cursorColor:
+                                    FlutterFlowTheme.of(context).primaryText,
+                                validator: _model
+                                    .displayNameTextControllerValidator
+                                    .asValidator(context),
                               ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    fontFamily: 'Inter',
-                                    letterSpacing: 0.0,
-                                  ),
-                              keyboardType: TextInputType.name,
-                              cursorColor:
-                                  FlutterFlowTheme.of(context).primaryText,
-                              validator: _model
-                                  .displayNameTextControllerValidator
-                                  .asValidator(context),
                             ),
                           ),
-                          SizedBox(
-                            width: double.infinity,
-                            child: TextFormField(
-                              controller: _model.genderTextController,
-                              focusNode: _model.genderFocusNode,
-                              onChanged: (_) => EasyDebounce.debounce(
-                                '_model.genderTextController',
-                                const Duration(milliseconds: 2000),
-                                () => safeSetState(() {}),
-                              ),
-                              autofocus: false,
-                              obscureText: false,
-                              decoration: InputDecoration(
-                                isDense: true,
-                                labelStyle: FlutterFlowTheme.of(context)
-                                    .labelMedium
+                          AuthUserStreamWidget(
+                            builder: (context) => Container(
+                              width: double.infinity,
+                              child: TextFormField(
+                                controller: _model.genderTextController,
+                                focusNode: _model.genderFocusNode,
+                                onChanged: (_) => EasyDebounce.debounce(
+                                  '_model.genderTextController',
+                                  Duration(milliseconds: 2000),
+                                  () => safeSetState(() {}),
+                                ),
+                                autofocus: false,
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  labelStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .override(
+                                        fontFamily: 'Inter',
+                                        letterSpacing: 0.0,
+                                      ),
+                                  hintText: 'Gender...',
+                                  hintStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .override(
+                                        fontFamily: 'Inter',
+                                        letterSpacing: 0.0,
+                                      ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(24.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0x00000000),
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(24.0),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context).error,
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(24.0),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context).error,
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(24.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  contentPadding:
+                                      EdgeInsetsDirectional.fromSTEB(
+                                          24.0, 26.0, 24.0, 26.0),
+                                  suffixIcon: _model
+                                          .genderTextController!.text.isNotEmpty
+                                      ? InkWell(
+                                          onTap: () async {
+                                            _model.genderTextController
+                                                ?.clear();
+                                            safeSetState(() {});
+                                          },
+                                          child: Icon(
+                                            Icons.clear,
+                                            size: 22,
+                                          ),
+                                        )
+                                      : null,
+                                ),
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
                                     .override(
                                       fontFamily: 'Inter',
                                       letterSpacing: 0.0,
                                     ),
-                                hintText: 'Gender...',
-                                hintStyle: FlutterFlowTheme.of(context)
-                                    .labelMedium
-                                    .override(
-                                      fontFamily: 'Inter',
-                                      letterSpacing: 0.0,
-                                    ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(24.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Color(0x00000000),
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(24.0),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: FlutterFlowTheme.of(context).error,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(24.0),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: FlutterFlowTheme.of(context).error,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(24.0),
-                                ),
-                                filled: true,
-                                fillColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
-                                    24.0, 26.0, 24.0, 26.0),
-                                suffixIcon: _model
-                                        .genderTextController!.text.isNotEmpty
-                                    ? InkWell(
-                                        onTap: () async {
-                                          _model.genderTextController?.clear();
-                                          safeSetState(() {});
-                                        },
-                                        child: const Icon(
-                                          Icons.clear,
-                                          size: 22,
-                                        ),
-                                      )
-                                    : null,
+                                keyboardType: TextInputType.name,
+                                cursorColor:
+                                    FlutterFlowTheme.of(context).primaryText,
+                                validator: _model.genderTextControllerValidator
+                                    .asValidator(context),
                               ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    fontFamily: 'Inter',
-                                    letterSpacing: 0.0,
-                                  ),
-                              keyboardType: TextInputType.name,
-                              cursorColor:
-                                  FlutterFlowTheme.of(context).primaryText,
-                              validator: _model.genderTextControllerValidator
-                                  .asValidator(context),
                             ),
                           ),
                           FFButtonWidget(
                             onPressed: () async {
-                              final datePickedDate = await showDatePicker(
+                              final _datePickedDate = await showDatePicker(
                                 context: context,
                                 initialDate: getCurrentTimestamp,
                                 firstDate: DateTime(1900),
@@ -420,27 +438,31 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                 },
                               );
 
-                              if (datePickedDate != null) {
+                              if (_datePickedDate != null) {
                                 safeSetState(() {
                                   _model.datePicked = DateTime(
-                                    datePickedDate.year,
-                                    datePickedDate.month,
-                                    datePickedDate.day,
+                                    _datePickedDate.year,
+                                    _datePickedDate.month,
+                                    _datePickedDate.day,
                                   );
+                                });
+                              } else if (_model.datePicked != null) {
+                                safeSetState(() {
+                                  _model.datePicked = getCurrentTimestamp;
                                 });
                               }
                             },
                             text: 'Set Birthday',
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.calendar_today,
                               size: 24.0,
                             ),
                             options: FFButtonOptions(
                               width: double.infinity,
                               height: 70.0,
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 0.0, 16.0, 0.0),
-                              iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                              iconPadding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 0.0),
                               color: FlutterFlowTheme.of(context)
                                   .secondaryBackground,
@@ -460,7 +482,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                               borderRadius: BorderRadius.circular(24.0),
                             ),
                           ),
-                        ].divide(const SizedBox(height: 24.0)),
+                        ].divide(SizedBox(height: 24.0)),
                       ),
                     ),
                     FFButtonWidget(
@@ -472,16 +494,16 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                           gender: _model.genderTextController.text,
                         ));
 
-                        context.goNamed('tasks');
+                        context.goNamed(TasksWidget.routeName);
                       },
                       text: 'Complete Profile',
                       options: FFButtonOptions(
                         width: double.infinity,
                         height: 70.0,
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             16.0, 0.0, 16.0, 0.0),
                         iconPadding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                         color: FlutterFlowTheme.of(context).primary,
                         textStyle: FlutterFlowTheme.of(context)
                             .labelMedium
